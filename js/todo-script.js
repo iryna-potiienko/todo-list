@@ -17,7 +17,7 @@ class Todo {
 
 		const buttonRemove = document.querySelector('#removeAll');
 		buttonRemove.onclick = () => this.removeAllTasks();
-		if(this.tasks < 2)  {
+		if(this.proxyTasks < 2)  {
 				$("#removeAll").hide();
 		}
 	}
@@ -80,9 +80,7 @@ class Todo {
 	}
 
 	removeAllTasks(){
-		this.tasks.forEach((task, index) => {
-			this.removeTask(index);
-		});
+		this.proxyTasks.splice(0,this.proxyTasks.length);
 	}
 
 	renderTask() {
