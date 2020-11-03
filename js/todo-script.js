@@ -15,11 +15,19 @@ class Todo {
 		const buttonAdd = document.querySelector('#add');
 		buttonAdd.onclick = () => this.createTask();
 
+<<<<<<< HEAD
 		const buttonRemove = document.querySelector('#removeAll');
 		buttonRemove.onclick = () => this.removeAllTasks();
 		if(this.proxyTasks < 2)  {
 				$("#removeAll").hide();
 		}
+=======
+		// const buttonRemove = document.querySelector('#removeAll');
+		// buttonRemove.onclick = () => this.removeAllTasks();
+		// if(this.tasks < 2)  {
+		// 		$("#removeAll").hide();
+		// }
+>>>>>>> 703d67cae66548a32b927d66f5b508d0a09e9132
 	}
 
 	taskSchema(status, name) {
@@ -49,10 +57,10 @@ class Todo {
 		localStorage.setItem('tasks', JSON.stringify(this.tasks));
 	}
 	createTask() {
-		event.preventDefault();                                         // prevent the default action of the event
-    event.stopPropagation();                                        // stop the event from the building up the other elements
-    const name = $("input").val();                                    // get the value from the input
-    if (name !=="") {                                               // check if the input value is not empty
+		event.preventDefault();                                       
+    event.stopPropagation();                                        
+    const name = $("input").val();                                    
+    if (name !=="") {                                               
 			//const name = prompt('Введите название задания');
 			//if (name.length <= 0 || name.length > 100) return;
 			this.proxyTasks.push({
