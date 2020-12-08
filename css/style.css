@@ -1,6 +1,7 @@
 /* Style the list items */
 ul li {
-  cursor: pointer;
+  /*cursor: pointer;*/
+  cursor: move;
   position: relative;
   padding: 12px 8px 12px 40px;
   background: #eee;
@@ -61,4 +62,7 @@ ul li.checked::before {
 
 input{
   display: none;
+}
+.selected {
+  opacity: 0.6;
 }
