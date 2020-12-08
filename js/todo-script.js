@@ -91,6 +91,36 @@ class Todo {
 		buttonRemove.onclick = () => this.removeAllTasks();
 	}
 
+	checkLocalStoredge(){
+      var tasks2 = localStorage.getItem('tasks')
+      ? JSON.parse(localStorage.getItem('tasks'))
+      : [];
+       console.log(tasks2.length);
+      // console.log(tasks2[2]);
+
+      for(var i =0; i<tasks2.length && i<this.tasks.length ; i++){
+        if(this.tasks[i].name != tasks2[i].name){
+          this.tasks[i] = tasks2[i];
+          //this.tasks[i].status = true;
+        }
+      }
+      if(this.tasks.length > tasks2.length){
+        for(var i = tasks2.length; i< this.tasks.length; i++){
+          this.tasks.splice(i,1);
+        }
+      }
+      else if(tasks2.length > this.tasks.length){
+        for(var i = this.tasks.length; i< tasks2.length; i++){
+          this.tasks.push(tasks2[i]);
+          //this.tasks[i].status = true;
+
+        }
+      }
+      this.renderTask();
+      console.log("delay");
+
+    }
+
 	taskSchema(task) {
 		const wrapper = document.createElement('li');
 		wrapper.setAttribute('id', task.id);
@@ -359,5 +389,13 @@ class Dnd extends Todo{
 
 
 
-new Todo();
-new Dnd(Todo.list);
+//new Todo();
+var todo = new Todo();
+
+window.addEventListener('storage', function(e) {
+ console.log('Woohoo, someone changed my localstorage va another tab/window!');
+todo.checkLocalStoredge();
+
+});
+
+new Dnd(todo.list);    //Todo.list);
