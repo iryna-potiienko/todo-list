@@ -96,17 +96,19 @@ class Todo {
 		wrapper.setAttribute('id', task.id);
 		wrapper.classList.toggle('list-group-item');
 		wrapper.draggable = true;
-		if(task.status==true){
+		if(task.status==false){
 			wrapper.classList.toggle('checked');
 		}
+		//document.getElementById('edit-id').value = country.id;
 		wrapper.innerHTML = (`
-			<input type="checkbox" ${task.status ? 'checked' : ' '}/>
-			<input type="hidden" value= ${task.id}>
-			<span>${task.name}</span>
+			<input type="checkbox" class='task-status' ${task.status ? 'checked' : ' '}/>
+			<input type="hidden" class ='task-id' value= '${task.id}'>
+			<span id='task-name'>${task.name}</span>
 
 			<i class='btn btn-danger close'>x</i>
 
 		`);
+		wrapper.getElementsByClassName('task-id')[0].value = task.id;
 		return wrapper;
 		//wrapper.append(this.list);
 		//this.list.appendChild(wrapper);
@@ -125,7 +127,7 @@ class Todo {
 	createTask() {
 		event.preventDefault();                                         // prevent the default action of the event
     event.stopPropagation();                                        // stop the event from the building up the other elements
-    const name = $("input").val();                                    // get the value from the input
+    const name = $("input").val().trim();                                    // get the value from the input
     if (name !=="") {                                               // check if the input value is not empty
 			this.idCounter++;
 			let task = {
@@ -142,17 +144,22 @@ class Todo {
 	}
 	}
 
-	changeTaskStatus(index, status) {
-		this.tasks[index].status = status;
+	changeTaskStatus(index, taskstatus) {
+		let status = taskstatus.checked;   //true;
+		//if(taskstatus)	status = false;
+		//else status = true;
+		this.proxyTasks[index].status = status;
 		//const task = this.list.querySelector('li');
 		//task.setAttribute('class','checked');
 		//this.list.children[index].
 		if(status==true){
 			this.list.children[index].classList.toggle('checked');
+			//document.getElementsByClassName('task-status')[index] = status;
 		}else{
 			this.list.children[index].classList.remove('checked');
 		}
-		this.saveTasks();
+		//document.getElementsByClassName('task-status')[index].checked = status;
+		//this.saveTasks();
 	}
 	removeTask(index) {
 		this.proxyTasks.splice(index, 1);
@@ -222,13 +229,32 @@ class Todo {
 
 			task.onclick = ()=> {
 				//console.log(task);
-				if(status)	status = false;
-				else status = true;
+				/*if(status)	status = false;
+				else status = true;*/
 				this.changeTaskStatus(index, status);
 			}
 
 			remove.onclick = () => this.removeTask(index);
 		});
+	}
+
+	orderTasks(){
+		let orderedTasks = [];
+		const tasks = this.list.getElementsByTagName('li');
+		//tasks.forEach((task, index) => {
+
+		for (let task of tasks) {
+			let id = task.getElementsByClassName('task-id')[0].value;
+			let st = task.getElementsByClassName('task-status')[0];
+			let ordtask = {
+				id : task.getElementsByClassName('task-id')[0].value,
+				name : task.getElementsByTagName('span')[0].innerText,//task.querySelector('#task-name'),
+				status : task.getElementsByClassName('task-status')[0].checked
+			}
+			orderedTasks.push(ordtask);
+		};
+		this.tasks = orderedTasks;
+		this.saveTasks();
 	}
 
 	proxySetHandle(target, property, value) {
@@ -291,6 +317,7 @@ class Dnd extends Todo{
 			}
 			this.saveTasks();
 			*/
+			this.orderTasks();
       this.nextElementE = undefined;
   }
 
